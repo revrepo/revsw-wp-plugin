@@ -1,0 +1,192 @@
+.mcrevapm_list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.mcrevapm_fleft{
+    float: left;
+}
+.mcrevapm_fright{
+    float: right;
+}
+.mcrevapm_aleft{
+    text-align: left;
+}
+.mcrevapm_right{
+    text-align: right;
+}
+.mcrevapm_center{
+    text-align: center;
+}
+.mcrevapm_block_hidden{
+    display: block;
+    overflow: hidden;
+}
+.mcrevapm_block_auto{
+    display: block;
+    overflow: auto;
+}
+.mcrevapm_w100p{
+    width: 100%;
+}
+.mcrevapm_w_auto{
+    width: auto;
+}
+.mcrevapm_w50p{
+    width: 50%;
+}
+.mcrevapm_hidden{
+    display: none !important;
+    position: absolute !important;
+    left: -10000px !important;
+    top: -10000px !important;
+    width: 0px !important;
+    height: 0px !important;
+}
+.mcrevapm_progress{
+    background: #ddd;
+    color: #000;
+    padding: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-align: center;
+    border: 1px solid #008000;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    max-width: 90%;
+    height: auto;
+    overflow: auto;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+
+    z-index: 10000;
+}
+.mcrevapm_pointer{
+    cursor: pointer;
+}
+.mcrevapm_progress_icon_cancel{
+    color: #f00;
+}
+.mcrevapm_tab{
+    overflow: auto;
+}
+.mcrevapm_control_buttons button, .mcrevapm_control_buttons input[type="submit"]{
+    margin: 1px !important;
+    padding: 3px 5px !important;
+}
+.mcrevapm_progress_text{
+    font-size: 14px;
+    text-align: left;
+    color: #009999;
+    text-wrap: none;
+}
+.mcrevapm_progress_icon{
+    font-size: 40px;
+    padding: 55px 10px;
+}
+#mcrevapm_progress_operation{
+    font-size: 14px;
+    letter-spacing: normal;
+    font-weight: normal;
+}
+#mcrevapm_progress_elapsed_time{
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: normal;
+}
+.mcrevapm_url_textarea{
+    width: 100%;
+    height: 2em;
+}
+.mcrevapm_w100{
+    display: inline-block;
+    width: 100px;
+}
+.mcrevapm_w150{
+    display: inline-block;
+    width: 150px;
+}
+.mcrevapm_w200{
+    display: inline-block;
+    width: 200px;
+}
+.mcrevapm_w250{
+    display: inline-block;
+    width: 250px;
+}
+.mcrevapm_w300{
+    display: inline-block;
+    width: 300px;
+}
+.mcrevapm_w350{
+    display: inline-block;
+    width: 350px;
+}
+.mcrevapm_w400{
+    display: inline-block;
+    width: 400px;
+}
+.mcrevapm_w450{
+    display: inline-block;
+    width: 450px;
+}
+.mcrevapm_w500{
+    display: inline-block;
+    width: 500px;
+}
+.mcrevapm_pleft_tab1{
+    padding-left: 4em;
+}
+.mcrevapm_pleft_tab2{
+    padding-left: 8em;
+}
+.mcrevapm_ok{
+    color: #00aa00;
+}
+.mcrevapm_err{
+    color: #ff0000;
+}
+.mcrevapm_stats_details label{
+    display: inline-block;
+    width: 300px;
+}
+.mcrevapm_stats_details {
+    margin-bottom: 2em;
+}
+.mcrevapm_vert_align_mid{
+    vertical-align: middle;
+    display: inline-block;
+    line-height: normal;
+}
+.mcrevapm_disp_block{
+    display: block;
+}
+.mcrevapm_disp_iblock{
+    display: inline-block;
+}
+.mcrevapm_conatiner{
+    overflow: auto;
+    margin-top:auto;
+    margin-bottom:auto;
+    display: inline-block;
+    float: none;
+}
+
+.mcrevapm_nowrap{
+    white-space: nowrap;
+}
+.mcrevapm_mleft_1{
+    margin-left: 1em;
+}
+.mcrevapm_bottom_1{
+    margin-bottom: 1em;
+}
