@@ -1,2 +1,4 @@
-Test
+Folders:
+source - stores plugin source code
+desitrib - stores plugin zip file (can be installed into wordpress from dashboard)
 
