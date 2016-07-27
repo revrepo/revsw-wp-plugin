@@ -6,7 +6,13 @@ h1,h2,h3,h4{
 	width: 20%;
 }
 
-.mcrevapm_tab input[type="text"],.mcrevapm_tab input[type="password"],.mcrevapm_tab select{
+.mcrevapm_tab input[type="text"],.mcrevapm_tab input[type="email"],.mcrevapm_tab input[type="password"],.mcrevapm_tab select{
 	display: inline-block;
 	width: 78%;
+}
+
+.mcrevapm_plan_prices{
+	position: relative;
+	width: 15em;
+	margin: 0 auto;
 }

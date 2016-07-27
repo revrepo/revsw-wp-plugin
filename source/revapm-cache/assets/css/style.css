@@ -150,17 +150,10 @@
     padding-left: 8em;
 }
 .mcrevapm_ok{
-    color: #00aa00;
+    color: #00aa00 !important;
 }
 .mcrevapm_err{
-    color: #ff0000;
-}
-.mcrevapm_stats_details label{
-    display: inline-block;
-    width: 300px;
-}
-.mcrevapm_stats_details {
-    margin-bottom: 2em;
+    color: #ff0000 !important;
 }
 .mcrevapm_vert_align_mid{
     vertical-align: middle;
@@ -189,4 +182,36 @@
 }
 .mcrevapm_bottom_1{
     margin-bottom: 1em;
+}
+.mcrevapm_loading_img_btn{
+	width: 25px;
+	height: 25px;
+	display: block;
+	float:left;
+  padding-left: 10px;
+}
+.mcrevapm_orange{
+	color: #FF8A00 !important;
+}
+
+.mcrevapm_orange_button:hover{
+		color: #fff !important;
+		background-color: rgba(255, 138, 0, 0.7);
+    border-color: #FF8A00;
+		cursor: pointer;
+}
+
+.mcrevapm_orange_button{
+		color: #fff !important;
+    background-color: #FF8A00 !important;
+    border-color: #FF8A00 !important;
+    border: none;
+    border-radius: 4px;
+    font-size: 22px !important;
+    padding: 5px 10px;
+}
+
+.mcrevapm_big_font{
+    font-size: 20px !important;
+    font-weight: bold;
 }

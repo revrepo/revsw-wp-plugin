@@ -6,12 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 Plugin Name: RevAPM Cache
 Plugin URI: https://www.revapm.com/
 Description: A plugin for wordpress cache based on RevAPM CDN network
-Version: 0.0.0
+Version: 0.0.1
 Author: Modular Coding Inc
 Author URI: https://modcoding.com
 License: See license.txt
 */
-define ("MCREVAPM_PLUGIN_VERSION","ver=1.00");
+define ("MCREVAPM_PLUGIN_VERSION","ver=0.0.1");
 define ("MCREVAPM_PLUGIN_DIR",str_replace(DIRECTORY_SEPARATOR,"/",plugin_dir_path( __FILE__ )));
 define ("MCREVAPM_PLUGIN_URL",plugins_url()."/revapm-cache/");
 define ("MCREVAPM_SITE_URL",site_url()."/");
@@ -60,11 +60,11 @@ function mcrevapm_deactivation(){
 }
 
 function mcrevapm_settings(){
-	include_once MCREVAPM_PLUGIN_DIR."settings.php";
+	include_once MCREVAPM_PLUGIN_DIR."views/settings.php";
 }
 
 function mcrevapm_dashboard_add_page(){
-	add_menu_page( "RevAPM Cache", "RevAPM Cache Settings", 'manage_options',
+	add_menu_page( "RevAPM Cache", "RevAPM Cache", 'manage_options',
 		'mcrevapm_settings', 'mcrevapm_settings', MCREVAPM_PLUGIN_URL."assets/img/logo24.png" );
 }
 
@@ -77,13 +77,16 @@ function mcrevapm_settings_link($links){
 
 function mcrevapm_header(){
 	@ob_start();
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log(">header");
 }
 
 function mcrevapm_shutdown(){
 	// TODO: filter content and replace static links to CDN if enabled
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log(">shutdown");
 	$s = @ob_get_contents();
 	echo $s;
 if (defined("MCREVAPM_DEBUG")) file_put_contents(MCREVAPM_PLUGIN_DIR."page.html",$s);
+	if (defined("MCREVAPM_DEBUG")) mcrevapm_log("<shutdown");
 }
 
 function mcrevapm_save_settings(){
@@ -107,10 +110,20 @@ add_filter("plugin_action_links_$plugin", 'mcrevapm_settings_link');
 //if (!is_admin() && ((int)$_GET["mcdebug"] == 1)) {
 if (!is_admin())  {
 	add_action('init', 'mcrevapm_header', 20);
-	add_action('wp_shutdown', 'mcrevapm_shutdowm', 20);
+	add_action('shutdown', 'mcrevapm_shutdown', 20);
+//	remove_action( 'shutdown', 'wp_ob_end_flush_all', 1 );
 }
 
 ///////////////////////////////////////////////// AJAX actions /////////////////////////////////////////////////////////
-
-add_action("wp_ajax_mcrevapmsavesettings","mcrevapm_save_settings");
-add_action("wp_ajax_nopriv_mcrevapmsavesettings","mcrevapm_save_settings");
+function mcrevapm_signup(){
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log(">mcrevapm_signup");
+	include_once MCREVAPM_PLUGIN_DIR."inc/api.php";
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log("1.mcrevapm_signup");
+	$api = new MCREVAPM_API();
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log("2.mcrevapm_signup");
+	echo $api->signup();
+if (defined("MCREVAPM_DEBUG")) mcrevapm_log("<mcrevapm_signup");
+	exit(0);
+}
+add_action("wp_ajax_mcrevapmsignup","mcrevapm_signup");
+add_action("wp_ajax_nopriv_mcrevapmsignup","mcrevapm_signup");

@@ -155,3 +155,18 @@ function mcrevapm_is_textarea(el){
 function mcrevapm_is_datepicker(el){
     return jQuery(el).hasClass("hasDatepicker");
 }
+
+function mcrevapm_save_html_form_data(id_str){
+    var data = {};
+    jQuery("#"+id_str).find('select,textarea,input[type="text"],input[type="email"],input[type="password"],input[type="radio"],input[type="checkbox"]').each(function(){
+        var id = "" + jQuery(this).attr("id");
+        if ((id.length <= 0) ||  (id=="null") || (id == "undefined")) return;
+        if (mcrevapm_is_checked_input(this) || mcrevapm_is_radio_input(this)) {
+            if (jQuery(this).is(":checked"))
+                data[id] = 1;
+        } else {
+            data[id] = ""+jQuery(this).val();
+        }
+    });
+    return data;
+}
