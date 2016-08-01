@@ -16,3 +16,28 @@ h1,h2,h3,h4{
 	width: 15em;
 	margin: 0 auto;
 }
+
+.mcrevapm_submit_domain{
+	cursor: pointer;
+	color: #008000 !important;
+}
+
+.mcrevapm_edit_domain{
+	cursor: pointer;
+	color: #FF8A00 !important;;
+}
+
+.mcrevapm_delete_domain{
+	cursor: pointer;
+	color: #FF0000 !important;
+}
+
+.mcrevapm_delete_domain, .mcrevapm_edit_domain,.mcrevapm_submit_domain{
+	font-size: 24px !important;
+}
+
+#mcrevapm_api_key_updating_div img, .mcrevapm_domain_progress img, #mcrevapm_cdn_enabled_progress_div img{
+	width:  24px;
+	height: 24px;
+}
+
