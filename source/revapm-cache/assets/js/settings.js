@@ -1,5 +1,6 @@
 var mcrevapm_domain = window.location.hostname;
 var mcrevapm_counter = 0;
+var mcrevapm_add_domain_started = false;
 
 function mcrevapm_create_account(el){
 	jQuery(el).prop("disabled",true);
@@ -90,11 +91,11 @@ function mcrevapm_update_api_key(){
 					for (var key in res.data) {
 						var d = res.data[key];
 						jQuery("#mcrevapm_domains_table tbody").append('<tr id="mcrevapm_domain_row_'+d.id+'" data-id="'+d.id+'">'
-								+'<td><input type="radio" name="mcrevapm_rg_domains" class="mcrevapm_rg_domains" /></td>'
+								+'<td><input type="checkbox" name="mcrevapm_rg_domains" class="mcrevapm_rg_domains" /></td>'
 								+'<td>'+d.domain_name+'</td>'
 								+'<td>'+d.origin_server+'</td>'
 								+'<td>'+d.origin_host_header+'</td>'
-								+'<td>&nbsp;</td>'
+								+'<td>'+MCREVAPM_LOCATIONS_DATA[d.location_id]+'</td>'
 								+'<td>'+d.cname+'</td>'
 								+'<td>'
 //									+'<i class="fa fa-pencil mcrevapm_edit_domain" aria-hidden="true" onclick="mcrevapm_edit_domain(this)" title="Edit Domain"></i>'
@@ -117,11 +118,11 @@ function mcrevapm_add_domain(){
 	mcrevapm_counter++;
 	var id='mcrevapm_domain_row_'+mcrevapm_counter;
 	jQuery("#mcrevapm_domains_table tbody").append('<tr id="'+id+'" data-id="" >'
-		+'<td><input type="radio" name="mcrevapm_rg_domains" class="mcrevapm_rg_domains" disabled="disabled" /></td>'
+		+'<td><input type="checkbox" name="mcrevapm_rg_domains" class="mcrevapm_rg_domains" disabled="disabled" /></td>'
 		+'<td><input type="text" class="mcrevapm_domain" value="'+mcrevapm_domain+'"/></td>'
 		+'<td><input type="text" class="mcrevapm_server" value="'+mcrevapm_domain+'"/></td>'
 		+'<td><input type="text" class="mcrevapm_header" value="'+mcrevapm_domain+'"/></td>'
-		+'<td><select class="mcrevapm_location">'+MCREVAPM_LOCATIONS+'</select></td>'
+		+'<td><select class="mcrevapm_location">'+MCREVAPM_LOCATIONS_HTML+'</select></td>'
 		+'<td>&nbsp;</td>'
 		+'<td>'
 			+'<i class="fa fa-check mcrevapm_submit_domain" aria-hidden="true" onclick="mcrevapm_submit_add_domain(this)" title="Save New Domain"></i>'
@@ -131,9 +132,32 @@ function mcrevapm_add_domain(){
 	);
 }
 
+function mcrevapm_submit_add_domain_wait(domain_name){
+	if (!mcrevapm_add_domain_started)  return;
+	jQuery.post(MCREVAPM_AJAX_URL,{"action": "mcrevapmgetdomains"}, function(res){
+		try {
+//console.log(res);
+			var found = -1;
+			for (var i = 0; i < res.length; i++) {
+				if (domain_name.toString() == domain_name) {
+					found = i;
+					break;
+				}
+			}
+//console.log("domain_name = "+domain_name+" found = "+found);
+			if (found < 0)
+				setTimeout("mcrevapm_submit_add_domain_wait('"+domain_name+"')",10000);
+			else {
+				setTimeout("window.location.reload()",20000);
+			}
+		} catch(e) { if (console) console.log("Error in get_domains:\n"+e.message); window.location.reload();}
+	});
+}
+
 function mcrevapm_submit_add_domain(el){
 	var loc = ""+jQuery(el).parents("tr").find(".mcrevapm_location").val();
-	if ((loc.length <= 0) || (loc == "null")) {
+//console.log("loc = "+loc);
+	if ((loc.length <= 0) || (loc == "null") || (loc == "undefined")) {
 		alert("You should select a location");
 		return;
 	}
@@ -144,15 +168,20 @@ function mcrevapm_submit_add_domain(el){
 		"header": ""+jQuery(el).parents("tr").find(".mcrevapm_header").val(),
 		"location": ""+jQuery(el).parents("tr").find(".mcrevapm_location").val()
 	};
+	if ((request.domain.length <= 0) || (request.domain == "null") | (request.domain == "undefined")) {
+		return;
+	}
+	jQuery(el).parents("tr").find("td:last").append(jQuery("#mcrevapm_domain_progress_container").html());
+	mcrevapm_add_domain_started = true;
 //console.log("add domain"); console.log(request);
 	jQuery.post(MCREVAPM_AJAX_URL,request, function(res){
-//console.log(res);
-		if (parseInt(res.statusCode) != 200) {
+		if (parseInt(res.statusCode) >= 400) {
+			jQuery(el).parents("tr").find(".mcrevapm_domain_progress").remove();
+			mcrevapm_add_domain_started = false;
 			alert(res.message);
-		} else {
-			jQuery(el).parents("tr").find("td:last").html(jQuery("#mcrevapm_domain_progress_container").html());
 		}
 	});
+	mcrevapm_submit_add_domain_wait(request.domain);
 	//alert("submit add");
 }
 
@@ -188,17 +217,26 @@ function mcrevapm_edit_domain(el){
 function mcrevapm_save_system_settings(){
 	//console.log("save system settings");
 	if (!jQuery("#mcrevapm_cdn_enabled_progress_div").hasClass("mcrevapm_hidden")) return;
+	if (jQuery("#mcrevapm_cdn_status").is(":checked")) {
+		var qty = jQuery(".mcrevapm_rg_domains:checked").length;
+//console.log("checked = "+qty);
+		if (qty <= 0) {
+			jQuery("#mcrevapm_cdn_status").prop("checked",false);
+			alert("You should select at least one domain to use RevAPM CDN");
+			return;
+		}
+	}
+	var ids = [];
+	jQuery(".mcrevapm_rg_domains:checked").each(function (){
+		var domain_id = ""+jQuery(this).parents("tr").attr("data-id");
+		if (domain_id.length > 5)
+			ids.push(domain_id);
+	});
 	jQuery("#mcrevapm_cdn_enabled_progress_div").removeClass("mcrevapm_hidden");
 	var request = {
-		"cdn_status": (jQuery("#mcrevapm_cdn_status").is(":checked")) ? "on" : "off"
+		"cdn_status": (jQuery("#mcrevapm_cdn_status").is(":checked")) ? "on" : "off",
+		"ids": ids
 	};
-	if (request.cdn_status == "on") {
-		var row_el = jQuery(".mcrevapm_rg_domains:checked").eq(0);
-		request["domain_id"] = row_el.parents("tr").attr("data-id");
-		request["domain_name"] = row_el.parents("tr").find("td").eq(1).html();
-		request["domain_server"] = row_el.parents("tr").find("td").eq(2).html();
-		request["domain_cname"] = row_el.parents("tr").find("td").eq(5).html();
-	}
 //console.log(request);
 	jQuery.ajax({
 		  type:             'POST',
@@ -210,7 +248,12 @@ function mcrevapm_save_system_settings(){
 //console.log(res);
 	      try{
 					jQuery("#mcrevapm_cdn_enabled_progress_div").addClass("mcrevapm_hidden");
-		      alert("System savings saved!");
+		      if (res.statusCode != 200)
+		      	alert(res.message);
+		      else {
+						jQuery("#mcrevapm_cdn_status").prop("checked", (res.data.cdn_status == "on"));
+			      alert("System savings saved!");
+		      }
 				} catch(e) { if (console) console.log(e.message); }
       }
 	});
@@ -272,15 +315,6 @@ jQuery(document).ready(function(){
       }
 		});
 	jQuery("#mcrevapm_cdn_status").on("click",function(e){
-		if (jQuery("#mcrevapm_cdn_status").is(":checked")) {
-			var qty = jQuery(".mcrevapm_rg_domains:checked").length;
-//console.log("checked = "+qty);
-			if (qty <= 0) {
-				jQuery("#mcrevapm_cdn_status").prop("checked",false);
-				alert("You should select a domain to use RevAPM CDN");
-				return;
-			}
-		}
 		mcrevapm_save_system_settings();
 	});
 	jQuery(".mcrevapm_rg_domains").on("click",function(e){
