@@ -6,12 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 Plugin Name: RevAPM Cache
 Plugin URI: https://www.revapm.com/
 Description: A plugin for wordpress cache based on RevAPM CDN network
-Version: 0.0.4
+Version: 0.0.5
 Author: Modular Coding Inc
 Author URI: https://modcoding.com
 License: See license.txt
 */
-define ("MCREVAPM_PLUGIN_VERSION","ver=0.0.4");
+define ("MCREVAPM_PLUGIN_VERSION","ver=0.0.5");
 define ("MCREVAPM_PLUGIN_DIR",str_replace(DIRECTORY_SEPARATOR,"/",plugin_dir_path( __FILE__ )));
 define ("MCREVAPM_PLUGIN_URL",plugins_url()."/revapm-cache/");
 define ("MCREVAPM_SITE_URL",site_url()."/");
@@ -74,7 +74,7 @@ function mcrevapm_settings(){
 
 function mcrevapm_dashboard_add_page(){
 	add_menu_page( "RevAPM Cache", "RevAPM Cache", 'manage_options',
-		'mcrevapm_settings', 'mcrevapm_settings', MCREVAPM_PLUGIN_URL."assets/img/logo24.png" );
+		'mcrevapm_settings', 'mcrevapm_settings', MCREVAPM_PLUGIN_URL."assets/img/logo16.png" );
 }
 
 function mcrevapm_settings_link($links){
